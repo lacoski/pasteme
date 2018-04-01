@@ -1,10 +1,16 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
 urlpatterns = [
     # ex: /userzone/
-    path('', views.index, name='index'),
-
-    path('createpaste/', views.create_paste),
+    #path('', views.index, name='index'),    
+    #path('nameform/', views.get_name),
+    #path('thanks/', views.thanks),
+    #path('paste/<int:paste_id>', views.get_detail_paste),
+    #path('paste/<slug:paste_name>/<int:paste_id>', views.get_detail_paste),
+    path('', views.list_paste, name = 'list_pastes'),    
+    path('new', views.create_paste, name = 'create_pastes'),
+    path('update/<int:id>',views.update_paste, name = 'update_paste'),
+    path('delete/<int:id>',views.delete_paste, name = 'delete_paste'),
 ]
