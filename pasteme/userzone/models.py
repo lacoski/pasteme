@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 
@@ -38,3 +39,8 @@ class Paste(models.Model):
         ordering = ['-time_create']
     def __str__(self):
         return self.paste_name
+
+    def save(self, *args, **kwargs):
+        if not self.short_link:
+            self.short_link = get_random_string(length=10)
+        super().save()
