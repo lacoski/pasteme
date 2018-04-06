@@ -9,4 +9,7 @@ urlpatterns = [
     path('delete_paste/<int:id>', views.delete_paste_template, name = 'delete_paste_template'),
     path('review_paste/<slug:id>', views.review_paste_template, name = 'review_paste_template'),
     path('search_paste/', views.search_paste_template, name = 'search_paste_template'),
+    path('create_paste_guest/', views.create_paste_guest_template, name = 'create_paste_guest_template'),
+    path('review_paste_guest/<slug:id>', views.review_paste_guest_template, name = 'review_paste_guest_template'),
+    
 ]

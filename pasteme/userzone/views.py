@@ -7,6 +7,9 @@ from .forms import PasteCreateForm
 # Create your views here.
 
 NUMBER_ITEM_PER_PAGE = 5
+SUPPORT_LANGUAGE = ['Apache', 'Bash', 'C#', 'C++', 'CSS', 'CoffeeScript', 'Diff', 'HTML', 'XML', 'HTTP', 'Ini',  
+                    'JSON', 'Java', 'JavaScript', 'Makefile', 'Markdown', 'Nginx', 'Objective-C', 'PHP', 'Perl',  
+                    'Python', 'Ruby', 'SQL', 'Shell Session'] 
 
 def list_paste_template(request):
     Pastes = Paste.objects.filter(user_own=request.user.username)
@@ -27,7 +30,7 @@ def search_paste_template(request):
 
 def create_paste_template(request):
     form = PasteCreateForm(request.POST or None)
-    list_syntax = ['python','html']
+    list_syntax = SUPPORT_LANGUAGE
     if form.is_valid():        
         obj = form.save(commit=False)
         #print(obj.content_paste )
@@ -41,14 +44,15 @@ def create_paste_template(request):
                                                         'sub_title':'Lets Sharing your code','list_syntax':list_syntax})
 
 def update_paste_template(request,id):
-    Paste_ = Paste.objects.get(id=id)
-    list_syntax = ['python','html']
+    Paste_ = Paste.objects.get(id=id)    
+    list_syntax = SUPPORT_LANGUAGE
     form = PasteCreateForm(request.POST or None, instance=Paste_)
 
     if form.is_valid():
         form.save()        
         return redirect('review_paste_template', id=Paste_.short_link)
-    return render(request, 'userzone/paste_create.html', {'form': form, 'paste': Paste_, 'title':'Update Paste' ,'sub_title':'Changing your code','list_syntax':list_syntax})
+    return render(request, 'userzone/paste_create.html', {'form': form, 'paste': Paste_, 'title':'Update Paste' ,
+                                                        'sub_title':'Changing your code','list_syntax':list_syntax})
 
 def delete_paste_template(request,id):
     Paste_ = Paste.objects.get(id=id)
@@ -62,3 +66,17 @@ def review_paste_template(request,id):
     Paste_ = Paste.objects.get(short_link=id)    
     return render(request, 'userzone/paste_review.html', {'paste': Paste_, 'title':'Review Paste' ,'sub_title':'See your code'})
 
+def create_paste_guest_template(request):
+    form = PasteCreateForm(request.POST or None)
+    list_syntax = SUPPORT_LANGUAGE
+    if form.is_valid():        
+        obj = form.save(commit=False)        
+        obj.save()
+        target = Paste.objects.get(id=obj.id)        
+        return redirect('review_paste_guest_template', id=target.short_link)
+    return render(request, 'userzone/paste_create_guest.html', {'form': form, 'title':'Create Paste', 
+                                                                'sub_title':'Lets Sharing your code','list_syntax':list_syntax})
+
+def review_paste_guest_template(request,id):
+    Paste_ = Paste.objects.get(short_link=id)    
+    return render(request, 'userzone/paste_review_guest.html', {'paste': Paste_, 'title':'Review Paste' ,'sub_title':'See your code'})

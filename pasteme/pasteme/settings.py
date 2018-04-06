@@ -66,8 +66,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries':{
-                'UserzoneTemplatetag': 'userzone.templatetags.sidebar',
-
+                'UserzoneTemplatetag': 'userzone.templatetags.helper_base_template',
             }
         },
     },
