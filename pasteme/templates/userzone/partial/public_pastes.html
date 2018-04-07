@@ -1,0 +1,22 @@
+<div class="list-group">
+    {% for paste in list_pastes %}
+    <a href="#" class="list-group-item">      
+        <p class="font-weight-bold">{{paste.paste_name}}</p>
+        <small>{{paste.time_create}}</small>                 
+    </a>
+    {% endfor %}
+    
+    <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="justify-content-between">
+        <p class="mb-1">List group item heading</p>
+        <small class="text-muted">3 days ago</small>
+        </div>
+
+    </a>
+    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="justify-content-between">
+        <p class="mb-1">List group item heading</p>
+        <small class="text-muted">3 days ago</small>
+        </div>
+    </a> -->
+</div>   
