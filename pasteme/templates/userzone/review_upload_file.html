@@ -30,18 +30,16 @@
                         <a href="#" type="button" class="btn btn-default"><i class="fa fa-download"></i></a>
                     </div>
                 </div>
+                                
+                <div class="box-body">  
+                    <pre>
+                        <code class="{{paste.type_content_paste}}">{{ content }}</code>
+                    </pre> 
+                </div>
+                <div class="box-footer">
+                    <a href="{% url 'create_paste_guest_template' %}" class="btn btn-primary">Back</a>           
+                </div>                     
                 
-                <form role="form">  
-                    {% csrf_token %}   
-                    <div class="box-body">  
-                        <pre>
-                            <code class="{{paste.type_content_paste}}">{{ content_paste }}</code>
-                        </pre> 
-                    </div>
-                    <div class="box-footer">
-                        <a href="{% url 'create_paste_guest_template' %}" class="btn btn-primary">Back</a>           
-                    </div>                     
-                </form>
             </div>
         </div>
         <div class="col-md-2">

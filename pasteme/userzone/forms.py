@@ -28,4 +28,19 @@ class PasteCreateForm(forms.ModelForm):
                 'class': 'form-control'
             }),            
         }
+
+class PasteFileForm(forms.ModelForm):
+    class Meta:
+        model = Paste
+        fields = ['paste_name', 'type_content_paste',]       
+        widgets = {
+            'paste_name': forms.fields.TextInput(attrs={               
+                'class': 'form-control',
+            }),
+            'type_content_paste': forms.Select(                
+                attrs={               
+                    'class': 'form-control',
+                }
+            ),            
+        }
         

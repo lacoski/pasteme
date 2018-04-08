@@ -34,7 +34,8 @@
                     <option value="" selected=""></option>
                     {% else %}
                     <option value="{{paste.type_content_paste}}">{{paste.type_content_paste}}</option>
-                    {% endif %} {% for item in list_syntax %}
+                    {% endif %} 
+                    {% for item in list_syntax %}
                     <option value="{{item}}">{{item}}</option>
                     {% endfor %}
                   </select>
@@ -52,7 +53,7 @@
                   <label>Content paste</label>
                   {{form.content_paste}}
                   <!--<textarea class="form-control" rows="10" placeholder="Enter ..."></textarea>-->
-                </div>
+                </div>                
       
                 <div class="box-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>
