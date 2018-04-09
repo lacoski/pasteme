@@ -71,7 +71,7 @@ def review_paste_template(request,id):
     return render(request, 'userzone/paste_review.html', {'paste': Paste_, 'title':'Review Paste' ,'sub_title':'See your code'})
 
 def create_paste_guest_template(request):
-    form = PasteCreateForm(request.POST or None)
+    form = PasteFileForm(request.POST or None)
     list_syntax = SUPPORT_LANGUAGE
     if form.is_valid():        
         obj = form.save(commit=False)         
@@ -92,10 +92,12 @@ def review_paste_guest_template(request,id):
     file = open(get_file,'r')
     content= file.read()
     file.close() 
-    return render(request, 'userzone/paste_review_guest.html', {'paste': Paste_, 'title':'Review Paste' ,'sub_title':'See your code', 'content_paste':content})
+    str_content = str(content)
+    return render(request, 'userzone/paste_review_guest.html', {'paste': Paste_, 'title':'Review Paste' ,'sub_title':'See your code', 
+                                                                'content_paste':content, 'str_content': str_content})
 
 def create_paste_file_guest_template(request):
-    form = PasteFileForm(request.POST or None)
+    form = PasteCreateForm(request.POST or None)
     list_syntax = SUPPORT_LANGUAGE
     if form.is_valid():        
         obj = form.save(commit=False)        
