@@ -1,0 +1,62 @@
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template import loader
+from django.views import generic
+from .models import Paste
+from .forms import PasteCreateForm,PasteFileForm
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+import os
+from django.conf import settings
+from .helper import FileIO
+from django.contrib.auth.decorators import login_required
+# Create your views here.
+
+NUMBER_ITEM_PER_PAGE = 5
+SUPPORT_LANGUAGE = ['Apache', 'Bash', 'C#', 'C++', 'CSS', 'CoffeeScript', 'Diff', 'HTML', 'XML', 'HTTP', 'Ini',  
+                    'JSON', 'Java', 'JavaScript', 'Makefile', 'Markdown', 'Nginx', 'Objective-C', 'PHP', 'Perl',  
+                    'Python', 'Ruby', 'SQL', 'Shell Session'] 
+
+def index(request):
+    if request.user.is_authenticated:
+        return redirect('list_paste_template')
+    return redirect('create_paste_guest_template')
+
+
+@login_required
+def list_paste_template(request):
+    Pastes = Paste.objects.filter(user_own=request.user.username)
+    paginator = Paginator(Pastes, NUMBER_ITEM_PER_PAGE)
+    page = request.GET.get('page')
+    Pastes_with_paginator = paginator.get_page(page)
+    return render(request, 'userzone/paste_lists.html',{'Pastes':Pastes_with_paginator,
+                                                        'title':'Lists Paste' ,'sub_title':'All your code'} )
+@login_required
+def search_paste_template(request):    
+    search_text = request.GET.get('id')
+    Pastes = Paste.objects.filter(user_own=request.user.username, paste_name__contains=search_text)    
+    paginator = Paginator(Pastes, NUMBER_ITEM_PER_PAGE)
+    page = request.GET.get('page')
+    Pastes_with_paginator = paginator.get_page(page)
+    return render(request, 'userzone/paste_lists.html',{'Pastes':Pastes_with_paginator, 'title':'Search Paste',
+                                                        'sub_title':'Search your code','search_text':search_text,})
+@login_required
+def go_to_paste_template(request):    
+    short_link = request.GET.get('id')            
+    return redirect('review_paste_template', id=short_link)
+
+def go_to_paste_guest_template(request):    
+    short_link = request.GET.get('id')    
+    #print(short_link)        
+    #return redirect('create_paste_guest_template')
+    return redirect('review_paste_guest_template', id=short_link)
+
+@login_required
+def create_paste_template(request):
+    form = PasteFileForm(request.POST or None)
+    list_syntax = SUPPORT_LANGUAGE
+    if form.is_valid():        
+        obj = form.save(commit=False)
+        obj.user_own = request.user.username
+        obj.save()
+        content = request.POST.get('content_paste
