@@ -32,3 +32,45 @@ class UserLoginForm(forms.Form):
         if not user.is_active:
             raise forms.ValidationError("This user is not longer active")       
         return super(UserLoginForm, self).clean(*args, **kwargs)
+
+class UserRegisterForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'User'
+    })
+    )
+    email = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email'
+    })
+    )
+    password = forms.CharField(widget=forms.PasswordInput(attrs={               
+        'class': 'form-control',
+        'placeholder': 'Password'
+    })
+    )
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Re Password'
+    })
+    )
+    
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'password',
+            'password2'
+        ]              
+    def clean(self, *args, **kwargs):           
+        username = self.cleaned_data.get('username')
+        if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
+            raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+        
+        if password != password2:
+            raise forms.ValidationError("Password must match")        
+        return super(UserRegisterForm, self).clean(*args, **kwargs)
+        
