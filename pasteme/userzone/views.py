@@ -70,7 +70,7 @@ def create_paste_template(request):
 @login_required
 def update_paste_template(request,id):
     #Paste_ = Paste.objects.get(id=id)   
-    Paste_ = get_object_or_404(Paste, short_link=id) 
+    Paste_ = get_object_or_404(Paste, id=id) 
     list_syntax = SUPPORT_LANGUAGE
     form = PasteFileForm(request.POST or None, instance=Paste_)
     content = FileIO.readFile(Paste_.short_link)  
