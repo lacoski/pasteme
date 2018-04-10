@@ -18,6 +18,7 @@ from django.urls import include, path
 
 urlpatterns = [    
     path('', include('userzone.urls')),
+    path('api/', include('userzone.api.urls'), name='pastes-api'),
     path('admin/', admin.site.urls),
     path('userzone/', include('userzone.urls')),
     path('accounts/', include('accounts.urls')),
