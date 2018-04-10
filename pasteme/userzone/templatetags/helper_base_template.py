@@ -16,11 +16,15 @@ GROUP_FUNCTION= {'PASTE':
                 }
 
 @register.inclusion_tag('userzone/partial/sidebar_content.html')
-def sidebar_content():
+def sidebar_content(request_user):
     main_navigation = 'GROUP FUNCTION'
+    if request_user.is_authenticated:
+        username = request_user.username
     return {
-        'main_navigation': main_navigation,
+        'is_authenticated': request_user.is_authenticated,
+        'username': request_user.username,
         'group_function': GROUP_FUNCTION,
+        'main_navigation': main_navigation
     }
 
 @register.inclusion_tag('userzone/partial/user_account_menu.html')
