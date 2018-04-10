@@ -10,6 +10,10 @@ import os
 from django.conf import settings
 from .helper import FileIO
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+
 # Create your views here.
 
 NUMBER_ITEM_PER_PAGE = 5
@@ -103,6 +107,7 @@ def review_paste_template(request,id):
     return render(request, 'userzone/paste_review.html', {'paste': Paste_, 'title':'Review Paste' ,
                                                         'sub_title':'See your code', 'content_paste':content})
 
+@csrf_exempt
 def create_paste_guest_template(request):
     form = PasteFileForm(request.POST or None)
     list_syntax = SUPPORT_LANGUAGE
@@ -118,6 +123,22 @@ def create_paste_guest_template(request):
         return redirect('review_paste_guest_template', id=target.short_link)
     return render(request, 'userzone/paste_create_guest.html', {'form': form, 'title':'Create Paste', 
                                                                 'sub_title':'Lets Sharing your code','list_syntax':list_syntax})
+
+@csrf_exempt
+def create_paste_tool_guest_template(request):
+    form = PasteFileForm(request.POST or None)
+    list_syntax = SUPPORT_LANGUAGE
+    if form.is_valid():        
+        obj = form.save(commit=False)         
+        obj.save()
+        target = Paste.objects.get(id=obj.id)        
+
+        content_paste = request.POST.get('content_paste')
+        #print(content_paste)
+        FileIO.writeToFile(content_paste, target.short_link)        
+
+        return HttpResponse(target.short_link, status=200)
+    return HttpResponse('FAIL TO CREATE PASTE', status=400)
 
 def review_paste_guest_template(request,id):
     Paste_ = get_object_or_404(Paste, short_link=id)

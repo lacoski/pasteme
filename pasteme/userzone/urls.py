@@ -14,6 +14,7 @@ urlpatterns = [
     path('go_to_paste/', views.go_to_paste_template, name = 'go_to_paste_template'),
     path('search_paste/', views.search_paste_template, name = 'search_paste_template'),
     path('create_paste_guest/', views.create_paste_guest_template, name = 'create_paste_guest_template'),
+    path('create_tool_guest/', views.create_paste_tool_guest_template, name = 'create_paste_tool_guest_template'),
     path('review_paste_guest/<slug:id>', views.review_paste_guest_template, name = 'review_paste_guest_template'),
     path('go_to_paste_guest/', views.go_to_paste_guest_template, name = 'go_to_paste_guest_template'),    
     path('upload/', views.simple_upload, name = 'simple_upload'),
